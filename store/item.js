@@ -22,12 +22,13 @@ export const useItem = defineStore("item", {
   },
 
   actions: {
-    async getItemsAction(page = 1) {
+    async getItemsAction(page = 1, searchText = "") {
       try {
         this.loading = true;
         const response = await httpClient.get(`items`, {
           params: {
             page: page,
+            search: searchText,
           },
         });
         if (response) {

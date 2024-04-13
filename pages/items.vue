@@ -1,6 +1,28 @@
 <template>
   <div>
-    <p>Items</p>
+    <v-container fluid>
+        <v-row class="item-container">
+            <v-col cols="12" sm="6" md="6" lg="6">
+                <h2>ITEMS</h2>
+            </v-col>
+            <v-col cols="12" sm="6" md="6" lg="6">
+                <v-row>
+                    <v-col cols="12" sm="8" md="8" lg="8">
+                        <v-text-field
+                            v-model="searchText"
+                            @keyup.enter="onSearch"
+                            label="Search"
+                            outlined
+                            dense
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="4" md="4" lg="4">
+                        <v-btn color="primary" @click="onSearch" append-icon="mdi-magnify">Search</v-btn>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+    </v-container>
     <p v-if="isLoading">Loading ...</p>
     <v-container v-else fluid>
       <v-row>
@@ -17,12 +39,11 @@
                 Original Price <v-chip color="primary">{{ item.mrp }}</v-chip>
               </p>
               <p>
-                Discount <span class="data">{{ item.discount }} %</span
-                >
+                Discount <span class="data">{{ item.discount }} %</span>
               </p>
               <p>
                 Discounted Price
-                <v-chip color="primary">{{ item.price}}</v-chip>
+                <v-chip color="primary">{{ item.price }}</v-chip>
               </p>
               <p>
                 Average Rating <span class="data">{{ item.rating }}</span>
@@ -46,7 +67,7 @@
 import { useItem } from "~/store/item"; // Assuming auto-imports
 import { ref, onMounted, computed } from "vue";
 
-const isOpen = ref(false);
+const searchText = ref("");
 const data = ref(null);
 const itemStore = useItem();
 
@@ -57,12 +78,16 @@ const openLink = (url) => {
   window.open(url, "_blank");
 };
 
+const onSearch = async () => {
+  await itemStore.getItemsAction(1, searchText.value);
+};
+
 onMounted(async () => {
   await itemStore.getItemsAction();
 });
 </script>
 
-<style>
+<style scoped>
 .card-margin {
   margin: 1rem;
 }
@@ -79,7 +104,12 @@ p {
 .data {
   font-weight: bold;
   margin: 0.25rem;
-  padding: 0.50rem;
+  padding: 0.5rem;
   background-color: bisque;
+}
+
+.item-container {
+    align-items: center;
+    background-color: azure;
 }
 </style>
