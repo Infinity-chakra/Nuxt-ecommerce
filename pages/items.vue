@@ -8,18 +8,22 @@
             <v-btn color="primary" @click="goToPage('next')" class="ma-1"
               >Next Page</v-btn
             >
-            <v-btn color="primary" @click="goToPage('previous')" class="ma-1" :disabled="currentPage === 1"
+            <v-btn
+              color="primary"
+              @click="goToPage('previous')"
+              class="ma-1"
+              :disabled="correctedPageNumber === 1"
               >Previous Page</v-btn
             >
-            <span>Total Pages {{ Math.ceil(items.count/10) }}</span>
+            <span>Total Pages {{ Math.ceil(items.count / 10) }}</span>
             <v-text-field
-                v-model="currentPage"
-                @keyup.enter="goToPageNumber"
-                label="Go to Page Number"
-                type="number"
-                placeholder="Enter page number"
-                outlined
-                dense
+              v-model="currentPage"
+              @keyup.enter="goToPageNumber"
+              label="Go to Page Number"
+              type="number"
+              placeholder="Enter page number"
+              outlined
+              dense
             ></v-text-field>
           </div>
         </v-col>
@@ -43,7 +47,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <p v-if="isLoading">Loading ...</p>
+    <Loader v-if="isLoading" />
     <v-container v-else fluid>
       <v-row>
         <v-col cols="12" sm="4" md="4" lg="4" v-for="n in 3" :key="n">
@@ -92,12 +96,27 @@ import { useItem } from "~/store/item"; // Assuming auto-imports
 import { ref, onMounted, computed } from "vue";
 
 const searchText = ref("");
-const data = ref(null);
 const currentPage = ref(1);
 const itemStore = useItem();
 
 const items = computed(() => itemStore.getItemList);
 const isLoading = computed(() => itemStore.isLoading);
+
+// Page number validation
+const correctedPageNumber = computed(() => {
+  return Math.max(currentPage.value, 1);
+});
+
+useHead({
+  title: "Items",
+  meta: [
+    {
+      hid: "description",
+      name: "description",
+      content: "This is an Ecommerce website created using Nuxt JS. It uses an API built with Django Rest Framework. You can search for items, view items, and paginate through the items.",
+    },
+  ],
+});
 
 const openLink = (url) => {
   window.open(url, "_blank");
@@ -108,6 +127,7 @@ const onSearch = async () => {
 };
 
 const goToPage = async (type) => {
+  currentPage.value = parseInt(currentPage.value);
   if (type === "next") {
     currentPage.value += 1;
   } else {
@@ -115,11 +135,11 @@ const goToPage = async (type) => {
       currentPage.value -= 1;
     }
   }
-  await itemStore.getItemsAction(currentPage.value, searchText.value);
+  await itemStore.getItemsAction(correctedPageNumber.value, searchText.value);
 };
 
 const goToPageNumber = async () => {
-  await itemStore.getItemsAction(currentPage.value, searchText.value);
+  await itemStore.getItemsAction(correctedPageNumber.value, searchText.value);
 };
 
 onMounted(async () => {

@@ -25,6 +25,10 @@ const responseInterceptor = httpClient.interceptors.response.use(
     },
     error => {
         // Do something with response error
+        if (error.response.status === 404) {
+            console.log('404 Error: Page not found');
+            // Handle the 404 error here
+        }
         return Promise.reject(error);
     }
 );
