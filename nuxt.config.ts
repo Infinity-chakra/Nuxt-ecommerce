@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+import darkTheme from './themes/dark'; 
 export default defineNuxtConfig({
   devtools: { enabled: true },
   build: {

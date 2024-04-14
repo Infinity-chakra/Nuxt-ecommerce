@@ -16,7 +16,7 @@ import { ref } from "vue";
 
 <style scoped>
 .footer {
-  background-color: #3f51b5;
+  background-color: aquamarine;
   color: white;
   text-align: center;
   padding: 10px;

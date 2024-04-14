@@ -5,15 +5,15 @@
         <v-col cols="12" sm="6" md="6" lg="6">
           <h2>ITEMS</h2>
           <div class="paginator">
-            <v-btn color="primary" @click="goToPage('next')" class="ma-1"
-              >Next Page</v-btn
-            >
             <v-btn
               color="primary"
               @click="goToPage('previous')"
               class="ma-1"
               :disabled="correctedPageNumber === 1"
               >Previous Page</v-btn
+            >
+            <v-btn color="primary" @click="goToPage('next')" class="ma-1"
+              >Next Page</v-btn
             >
             <span>Total Pages {{ Math.ceil(items.count / 10) }}</span>
             <v-text-field
@@ -51,12 +51,15 @@
     <Loader v-if="isLoading" />
     <v-container v-else fluid>
       <v-row>
-        <v-col cols="12" sm="4" md="4" lg="4" v-for="n in 3" :key="n">
-          <v-card
-            v-for="item in items.results"
-            :key="item.id"
-            class="card-margin"
-          >
+        <v-col
+          v-for="item in items.results"
+          :key="item.id"
+          cols="12"
+          sm="4"
+          md="4"
+          lg="4"
+        >
+          <v-card class="card-margin bg-green.darken1">
             <v-card-title>
               {{ item.title }}
             </v-card-title>
@@ -85,6 +88,9 @@
               <v-btn color="primary" @click="openLink(item.link)">
                 Buy Now
               </v-btn>
+              <v-btn color="secondary" @click="goToDetail(item.id)">
+                View Details
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -95,10 +101,12 @@
 <script setup>
 import { useItem } from "~/store/item"; // Assuming auto-imports
 import { ref, onMounted, computed } from "vue";
+import { useRouter } from "nuxt/app";
 
 const searchText = ref("");
 const currentPage = ref(1);
 const itemStore = useItem();
+const router = useRouter();
 
 const items = computed(() => itemStore.getItemList);
 const isLoading = computed(() => itemStore.isLoading);
@@ -114,13 +122,20 @@ useHead({
     {
       hid: "description",
       name: "description",
-      content: "This is an Ecommerce website created using Nuxt JS. It uses an API built with Django Rest Framework. You can search for items, view items, and paginate through the items.",
+      content:
+        "This is an Ecommerce website created using Nuxt JS. It uses an API built with Django Rest Framework. You can search for items, view items, and paginate through the items.",
     },
   ],
 });
 
 const openLink = (url) => {
   window.open(url, "_blank");
+};
+
+const goToDetail = async (itemId) => {
+  // Navigate to items route with params
+  console.log("Item ID", itemId);
+  await navigateTo(`/items/${itemId}`);
 };
 
 const onSearch = async () => {

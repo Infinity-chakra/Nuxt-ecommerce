@@ -44,16 +44,14 @@ export const useItem = defineStore("item", {
 
     async getItemDetailAction(id) {
       try {
-        const headers = {
-          Authorization: `Bearer ${auth.authData.access}`,
-        };
-        const response = await httpClient.get("groups?page=" + page, {
-          headers,
-        });
+        this.loading = true;
+        const response = await httpClient.get(`items/${id}`);
         this.item = response.data;
       } catch (error) {
         console.log(error);
         return error;
+      } finally {
+        this.loading = false;
       }
     },
 
