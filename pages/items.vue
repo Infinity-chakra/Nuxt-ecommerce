@@ -17,6 +17,7 @@
             >
             <span>Total Pages {{ Math.ceil(items.count / 10) }}</span>
             <v-text-field
+              class="page-input"
               v-model="currentPage"
               @keyup.enter="goToPageNumber"
               label="Go to Page Number"
@@ -171,5 +172,10 @@ p {
 .item-container {
   align-items: center;
   background-color: azure;
+}
+
+.page-input {
+  width: 300px;
+  margin-top: 0.75rem;
 }
 </style>

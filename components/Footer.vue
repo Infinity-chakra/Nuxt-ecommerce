@@ -1,6 +1,5 @@
 <template>
-  <v-footer color="secondary" app>
-    <v-container>
+  <v-container class="footer" fluid>
       <v-row>
         <v-col cols="12" sm="6">
           <p>
@@ -9,9 +8,17 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-footer>
 </template>
 
 <script setup>
 import { ref } from "vue";
 </script>
+
+<style scoped>
+.footer {
+  background-color: #3f51b5;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+</style>

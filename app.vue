@@ -1,7 +1,10 @@
 <template>
-  <v-app>
-    <Header />
+  <NuxtLayout>
     <NuxtPage />
-    <Footer />
-  </v-app>
+  </NuxtLayout>
+  
 </template>
+
+<script setup>
+import '@/assets/main.css';
+</script>
