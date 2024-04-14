@@ -18,4 +18,8 @@
     </v-container>
   </NuxtLayout>
 </template>
-<script setup></script>
+<script setup>
+definePageMeta({
+  middleware: ["auth"],
+});
+</script>
