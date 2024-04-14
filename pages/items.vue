@@ -1,33 +1,57 @@
 <template>
   <div>
     <v-container fluid>
-        <v-row class="item-container">
-            <v-col cols="12" sm="6" md="6" lg="6">
-                <h2>ITEMS</h2>
+      <v-row class="item-container">
+        <v-col cols="12" sm="6" md="6" lg="6">
+          <h2>ITEMS</h2>
+          <div class="paginator">
+            <v-btn color="primary" @click="goToPage('next')" class="ma-1"
+              >Next Page</v-btn
+            >
+            <v-btn color="primary" @click="goToPage('previous')" class="ma-1" :disabled="currentPage === 1"
+              >Previous Page</v-btn
+            >
+            <span>Total Pages {{ Math.ceil(items.count/10) }}</span>
+            <v-text-field
+                v-model="currentPage"
+                @keyup.enter="goToPageNumber"
+                label="Go to Page Number"
+                type="number"
+                placeholder="Enter page number"
+                outlined
+                dense
+            ></v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="12" sm="6" md="6" lg="6">
+          <v-row>
+            <v-col cols="12" sm="8" md="8" lg="8">
+              <v-text-field
+                v-model="searchText"
+                @keyup.enter="onSearch"
+                label="Search"
+                outlined
+                dense
+              ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" md="6" lg="6">
-                <v-row>
-                    <v-col cols="12" sm="8" md="8" lg="8">
-                        <v-text-field
-                            v-model="searchText"
-                            @keyup.enter="onSearch"
-                            label="Search"
-                            outlined
-                            dense
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4" md="4" lg="4">
-                        <v-btn color="primary" @click="onSearch" append-icon="mdi-magnify">Search</v-btn>
-                    </v-col>
-                </v-row>
+            <v-col cols="12" sm="4" md="4" lg="4">
+              <v-btn color="primary" @click="onSearch" append-icon="mdi-magnify"
+                >Search</v-btn
+              >
             </v-col>
-        </v-row>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-container>
     <p v-if="isLoading">Loading ...</p>
     <v-container v-else fluid>
       <v-row>
         <v-col cols="12" sm="4" md="4" lg="4" v-for="n in 3" :key="n">
-          <v-card v-for="item in items" :key="item.id" class="card-margin">
+          <v-card
+            v-for="item in items.results"
+            :key="item.id"
+            class="card-margin"
+          >
             <v-card-title>
               {{ item.title }}
             </v-card-title>
@@ -69,6 +93,7 @@ import { ref, onMounted, computed } from "vue";
 
 const searchText = ref("");
 const data = ref(null);
+const currentPage = ref(1);
 const itemStore = useItem();
 
 const items = computed(() => itemStore.getItemList);
@@ -80,6 +105,21 @@ const openLink = (url) => {
 
 const onSearch = async () => {
   await itemStore.getItemsAction(1, searchText.value);
+};
+
+const goToPage = async (type) => {
+  if (type === "next") {
+    currentPage.value += 1;
+  } else {
+    if (currentPage.value > 0) {
+      currentPage.value -= 1;
+    }
+  }
+  await itemStore.getItemsAction(currentPage.value, searchText.value);
+};
+
+const goToPageNumber = async () => {
+  await itemStore.getItemsAction(currentPage.value, searchText.value);
 };
 
 onMounted(async () => {
@@ -109,7 +149,7 @@ p {
 }
 
 .item-container {
-    align-items: center;
-    background-color: azure;
+  align-items: center;
+  background-color: azure;
 }
 </style>

@@ -32,7 +32,7 @@ export const useItem = defineStore("item", {
           },
         });
         if (response) {
-          this.itemList = response.data.results;
+          this.itemList = response.data;
           this.loading = false;
         }
       } catch (error) {

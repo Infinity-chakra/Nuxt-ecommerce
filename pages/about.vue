@@ -1,23 +1,21 @@
 <template>
   <div>
-    <p>About Page</p>
-    <!-- <p v-if="isLoading">
-      Loading ...
-    </p>
-    <v-container v-else>
-      <v-row>
-        <v-col>
-          <v-card v-for="item in data" :key="item.id">
-            <v-card-title>
-              {{ item.title }}
-            </v-card-title>
-            <v-card-text>
-              {{ item.description }}
-            </v-card-text>
-          </v-card>
+    <v-container fluid>
+      <v-row class="item-container">
+        <v-col cols="12" sm="6" md="6" lg="6">
+          <h2>ABOUT</h2>
+          
+          <p>
+            This is an Ecommerce website created using Nuxt JS. It uses an API built with Django Rest Framework.
+            You can search for items, view items, and paginate through the items.
+          </p>
+        </v-col>
+        <v-col cols="12" sm="6" md="6" lg="6">
+          <img src="/static/images/eshop.png" alt="Image" />
         </v-col>
       </v-row>
-    </v-container> -->
+    </v-container>
+    
   </div>
 </template>
 <script setup>

@@ -1,24 +1,20 @@
 <template>
-  <div>
-    <p>Home Page</p>
-    <p v-if="isLoading">
-      Loading ...
-    </p>
-    <v-container v-else>
-      <v-row>
-        <v-col>
-          <v-card  v-for="item in items" :key="item.id"> 
-            <v-card-title>
-              {{ item.id }}
-            </v-card-title>
-            <v-card-text>
-              {{ item.title }}
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+  <v-container fluid>
+    <v-row class="item-container">
+      <v-col cols="12" sm="6" md="6" lg="6">
+        <h2>HOME</h2>
+
+        <p>
+          This is an Ecommerce website created using Nuxt JS. It uses an API
+          built with Django Rest Framework. You can search for items, view
+          items, and paginate through the items.
+        </p>
+      </v-col>
+      <v-col cols="12" sm="6" md="6" lg="6">
+        <img src="/static/images/eshop.png" alt="Image" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
@@ -28,23 +24,4 @@ import axios from "axios";
 
 // console.log(data)
 
-const items = ref([]);
-const isLoading = ref(false);
-
-const apiCall = async () => {
-  try {
-    const response = await axios.get("https://jsonplaceholder.typicode.com/todos"); 
-    console.log('response', response.data)
-    items.value = response.data;
-  } catch (error) {
-    console.error(error);
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-onMounted(async () => {
-  isLoading.value = true;
-  await apiCall();
-});
 </script>
