@@ -1,0 +1,13 @@
+{
+    "linters": {
+        "*.{js,vue}": [
+            "eslint --fix",
+            "prettier --write"
+        ]
+    },
+    "ignore": [
+        "**/node_modules/**",
+        ".nuxt",
+        ".git"
+    ]
+}
