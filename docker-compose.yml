@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+    nuxt:
+        restart: unless-stopped
+        build:
+            context: .
+        volumes:
+            - ./:/home/nuxt_ecommerce/
+        network_mode: host
+        ports:
+            - '3000:3000'
+        env_file:
+            - .env
+        command: ['npm', 'run', 'dev']
