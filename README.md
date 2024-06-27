@@ -9,8 +9,7 @@ This is an Ecommerce web-app I was experimenting with while learning Nuxt 3. It 
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-Here's the link of the back-end API used for this project 
-- https://github.com/Apfirebolt/Myntra_ecommerce_api_in_django
+Back-end API is included here
 - Created in Python using Django framework with Postgres as database.
 
 ## Features
